@@ -1,12 +1,3 @@
-/*1. USD/JPY, bid=125.42, ask=125.43
-2. EUR/USD, bid=1.2544, ask=1.2545
-3. GBP/USD, bid=14.2842, ask=14.2843
-4. AUD/USD, bid=16.2042, ask=16.8543
-5. USD/CHF, bid=1.3750, ask=1.3754
-6. EUR/JPY, bid=15.2942, ask=15.8543
-7. EUR/GBP, bid=0.6790, ask=0.6794
-*/
-
 import java.text.DecimalFormat;
 import java.util.Scanner;
 
@@ -14,53 +5,38 @@ class userIO {
 
     double inputValue;
     double resultValue;
-    double bid = 2;
-    double ask = 0;
-    String inputCurrencyFrom;
-    String inputCurrencyTo;
-    int choosekey;
+    int operationType;
+    int choosedPair;
     int exitkey;
 
     private DecimalFormat formattedDouble = new DecimalFormat("#0.00");
     private Scanner scanner = new Scanner(System.in);
     private Utils calculation = new Utils();
+    private Data data = new Data();
 
     public void listening() {
-        do{
-            System.out.println("Выберите необходимую валюту для конвертации: ");
-            inputCurrencyFrom = scanner.next();
-            //Проверка правильности ввода валюты
-            //
-            System.out.println("В какую валюту будем переводить?");
-            inputCurrencyTo = scanner.next();
-            //Проверка правильности ввода валюты
-            //
-            //Проверка возможности конвертации
+        do {
+            System.out.print("Выберите необходимую валютную пару для конвертации(цифр.): ");
+            choosedPair = scanner.nextInt();
+            while (choosedPair > 0 && choosedPair < 8) {
 
-            System.out.println("Необходимо ввести количество выбранной валюты. Дробная часть пишется после запятой.");
-            inputValue = scanner.nextDouble();
-            System.out.println("Введено " + formattedDouble.format(inputValue));
-            System.out.println();
+                System.out.print("Введите тип операции(1-Продажа, 2-Покупка): ");
+                operationType = scanner.nextInt();
+                System.out.print("Введите количество валюты: ");
+                inputValue = scanner.nextDouble();
+                System.out.println("Введено " + formattedDouble.format(inputValue));
+                System.out.println();
+                if (operationType == 1) {
+                    resultValue = calculation.Calculate(inputValue, data.pairList.get(choosedPair).bid);
+                } else {
+                    resultValue = calculation.Calculate(inputValue, data.pairList.get(choosedPair).ask);
+                }
 
-            System.out.println("1- Продажа; 2- Покупка.");
-            choosekey = scanner.nextInt();
-            switch (choosekey) {
-                case 1:
-                    System.out.println("Продажа:");
-                    resultValue = calculation.Calculate(inputValue,bid);
-                    System.out.println(resultValue);
-                    break;
-                case 2:
-                    System.out.println("Покупка:");
-                    resultValue = calculation.Calculate(inputValue,ask);
-                    System.out.println(resultValue);
-                    break;
-                default:
-                    break;
+                System.out.println(resultValue);
+
+                System.out.println("Введите 1, если хотите завершить выполнение программы.");
+                exitkey = scanner.nextInt();
             }
-
-            System.out.println("Введите 1, если хотите завершить выполнение программы.");
-            exitkey = scanner.nextInt();
-        }while (exitkey != 1);
+        } while (exitkey != 1);
     }
 }
