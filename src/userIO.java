@@ -23,7 +23,7 @@ class userIO {
 
     private DecimalFormat formattedDouble = new DecimalFormat("#0.00");
     private Scanner scanner = new Scanner(System.in);
-    private Calculation calculation = new Calculation();
+    private Utils calculation = new Utils();
 
     public void listening() {
         do{
